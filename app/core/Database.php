@@ -17,17 +17,20 @@ trait Database
         $con = $this->connect();
         $stmt = $con->prepare($query);
 
-        $check = $stmt->execute(params: $data);
-        if ($check) {
-            $result = $stmt->fetchAll(PDO::FETCH_OBJ);
-            if (is_array(($result)) && count($result)) {
-                return $result;
+        try {
+            $check = $stmt->execute($data);
+            if ($check) {
+                $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+                if (is_array($result) && count($result)) {
+                    return $result;
+                }
             }
-
-        } else {
+        } catch (PDOException $e) {
+            error_log("Query Error: " . $e->getMessage());
             return false;
         }
 
+        return false;
     }
 
 
@@ -37,17 +40,20 @@ trait Database
         $con = $this->connect();
         $stmt = $con->prepare($query);
 
-        $check = $stmt->execute($data);
-        if ($check) {
-            $result = $stmt->fetchAll(PDO::FETCH_OBJ);
-            if (is_array(($result)) && count($result)) {
-                return $result[0];
+        try {
+            $check = $stmt->execute($data);
+            if ($check) {
+                $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+                if (is_array($result) && count($result)) {
+                    return $result[0];
+                }
             }
-
-        } else {
+        } catch (PDOException $e) {
+            error_log("Query Error: " . $e->getMessage());
             return false;
         }
 
+        return false;
     }
 
 

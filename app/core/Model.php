@@ -5,7 +5,7 @@ class Model
 {
     use Database;
 
-    protected $table = 'users';
+    protected $table = 'utilisateurs';
     protected $limit = 5;
     protected $offset = 0;
 
@@ -13,30 +13,28 @@ class Model
    
     public function where($data,$data_not=[]){
 
-        $query = "";
-
         $query = "SELECT * FROM $this->table where ";
         $keys = array_keys($data);
         $keys_not = array_keys($data_not);
    
 
         foreach($keys as $key){
-            $query .= $key . ' = :' . $key . ' && ';
+            $query .= $key . ' = :' . $key . ' AND ';
         }
 
         
         foreach($keys_not as $key){
-            $query .= $key . ' != :' . $key . ' && ';
+            $query .= $key . ' != :' . $key . ' AND ';
         }
 
         
   
-        $query = trim($query, " && ");
+        $query = trim($query, " AND ");
 
         $query .= " limit $this->limit offset $this->offset";
-        $data = array_merge($data,$data_not);
+        $data = array_merge($data_not,$data);
         return $this->query($query,$data);
-
+        
     }
 
 
