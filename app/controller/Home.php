@@ -6,21 +6,17 @@ class Home extends Controller
     {
         
     
-          $model = new Model;
-            $arr = [
-                'nom' => 'John Doe',
-                'email' => 'johndoe@example.com'
-            ];
+          $user = new Utilisateur;
+       
 
         
   
     
-          $result = $model->where($arr);
+          $result = $user->findAll();
 
-           show($result);
+          show($result);
 
-       
-   
+    
 
         $this->view(name: 'home');
     }
